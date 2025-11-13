@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import json
 import ciphers
-
+import uvicorn
 
 api = FastAPI()
 
@@ -15,10 +15,11 @@ def testing():
     return {"msg":"Hi from test"}
 
 @api.get("/test/{name}")
-def save_name(name):
+def save_name(name:str):
     with open("names.txt", "a") as f:
         f.write(name)
     return {"msg":"Saved user"}
+
 
 @api.post("/caesar")
 def caesar_cipher(offset):
