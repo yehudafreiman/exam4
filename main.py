@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
 import json
 import ciphers
@@ -6,7 +6,7 @@ import uvicorn
 
 class Request(BaseModel):
     text: str
-    offset: int | None 
+    offset: int | None
     mode: str | None  #"encrypt" or "decrypt"
 
 api = FastAPI()
@@ -25,7 +25,6 @@ def save_name(name:str):
         f.write(name)
     return {"msg":"Saved user"}
 
-
 @api.post("/caesar")
 def caesar_cipher(request:Request):
     if request["mode"] == "encrypt":
@@ -35,18 +34,17 @@ def caesar_cipher(request:Request):
         decrypted_text = ciphers.decode_ceaser(encode=request["text"], offset=request["offset"])
         return {"decrypted_text":decrypted_text}
 
-
 @api.get("/fence/encrypt?text={text}")
-def fence_cipher_encryption():
-    return {"encrypted_text":""}
+def fence_cipher_encryption(request:Request):
+    encrypted_text = ciphers.encode_fence(decode=request["text"])
+    return {"encrypted_text": encrypted_text}
 
 @api.post("/fence/decrypt")
-def fence_cipher_decryption():
-    return {"decrypted":""}
+def fence_cipher_decryption(request:Request):
+    decrypted_text = ciphers.decode_fence(encode=request["text"])
+    return {"decrypted_text": decrypted_text}
 
 
 
-if __name__ == "__main__":
-    uvicorn.run(api, host="localhost", port=8000)
 
 
