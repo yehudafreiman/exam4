@@ -8,7 +8,6 @@ def encode_ceaser(decode, offset):
         else:
             encode += i
     return encode.upper()
-print(encode_ceaser("AbZ",2)) #CDB
 
 
 def decode_ceaser(encode, offset):
@@ -21,5 +20,34 @@ def decode_ceaser(encode, offset):
         else:
             decode += i
     return decode.upper()
-print(decode_ceaser("CdB",2)) #ABZ
 
+
+def encode_fence(decode):
+    alphabet = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+    encode = ''
+    decode = decode.lower()
+    decode = decode.replace(" ", "")
+    for i,l in enumerate(decode):
+        if l in alphabet:
+            if i % 2 == 0:
+                encode += l
+            else:
+                continue
+    for i,l in enumerate(decode):
+        if l in alphabet:
+            if i % 2 != 0:
+                encode += l
+            else:
+                continue
+    return encode.upper()
+
+def decode_fence(encode):
+    alphabet = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+    decode = ''
+    encode = encode.lower()
+    for i in encode:
+        if i in alphabet:
+            decode += alphabet[alphabet.index(i)]
+        else:
+            decode += i
+    return decode.upper()
